@@ -12,7 +12,7 @@ int main()
     printf("\n");
     for(i = 0 ; i < 5; i++)
     {
-        if(vet[i] <= 8)
+        if(vet[i] <= 20)
         {
             printf("%d\n", vet[i]);
         }
