@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include <string.h>
+
+typedef struct // struct do cavalo
+{
+    char nome[100];
+    double velocidademaxima;
+    double velocidademinima;
+    int estamina;
+} typecavalo;
+
+typedef struct // struct do cavaleiro
+{
+   char nome[100];
+   typecavalo cavalo; // struct do cavalo dentro do cavaleiro
+} typecavaleiro;
+
+void mostrarcavaleiro(typecavaleiro *cavaleiro)
+{
+    printf("%s", cavaleiro->nome);
+    printf("%s", cavaleiro->cavalo.nome);
+    printf("%lf", cavaleiro->cavalo.velocidademaxima);
+    printf("%lf", cavaleiro->cavalo.velocidademinima);
+    printf("%d", cavaleiro->cavalo.estamina);
+}
+
+int verificarcavaleiros(typecavaleiro *cavaleiro1, typecavaleiro *cavaleiro2)
+{
+    if(strcmp(cavaleiro1->nome, cavaleiro2->nome) == 0) // uso da função strcmp para comparar duas strings
+    {
+        printf("Cavaleiro já inscrito");
+        return 1;
+    }
+    if(strcmp(cavaleiro1->cavalo.nome, cavaleiro2->cavalo.nome) == 0) // compara os nomes dos cavalos
+    {
+        printf("Cavalo já inscrito");
+        return 1;
+    }
+    
+   return 0; 
+}
+
+double distanciapercorrida(typecavalo *cavalo, int tempodeduracaodaprova)
+{
+    if(tempodeduracaodaprova <= cavalo->estamina)
+    {
+        return cavalo->velocidademaxima * tempodeduracaodaprova; // se o tempo de duração da prova for menor que o fôlego do cavalo ele vai fazer o percurso em velocidade máxima
+    }
+    else
+    {
+        return cavalo->velocidademaxima * cavalo->estamina + cavalo->velocidademinima * (tempodeduracaodaprova - cavalo->estamina); // se o tempo da prova for maior que o fôlego do cavalo, ele deve correr o que aguenta à velocidade máxima e depois terminar o restante da prova com a velocidade mínima
+    }
+}
+
+void compararquemganhou(typecavaleiro *cavaleiro1, typecavaleiro *cavaleiro2, int tempodeduracaodaprova)
+{
+    double distancia1 = distanciapercorrida(&cavaleiro1->cavalo, tempodeduracaodaprova);
+    double distancia2 = distanciapercorrida(&cavaleiro2->cavalo, tempodeduracaodaprova);
+    
+    if(distancia1 > distancia2)
+    {
+        printf("Vencedor: %s", cavaleiro1->nome);
+    }
+    else if(distancia2 > distancia1)
+    {
+        printf("Vencedor: %s", cavaleiro2->nome);
+    }
+    else
+    {
+        printf("Empate"); // se percorrerem a mesma distância
+    }
+}
+
+int main()
+{
+    typecavaleiro cavaleiro1, cavaleiro2;
+    int tempodeduracaodaprova;
+    
+    scanf("%d", &tempodeduracaodaprova);
+    
+    // leitura cavaleiro 1
+    scanf("%s", cavaleiro1.nome);
+    scanf("%s", cavaleiro1.cavalo.nome);
+    scanf("%lf", &cavaleiro1.cavalo.velocidademaxima);
+    scanf("%lf", &cavaleiro1.cavalo.velocidademinima);
+    scanf("%d", &cavaleiro1.cavalo.estamina);
+    
+    // leitura cavaleiro 2
+    do
+    {
+        scanf("%s", cavaleiro2.nome);
+        scanf("%s", cavaleiro2.cavalo.nome);
+        scanf("%lf", &cavaleiro2.cavalo.velocidademaxima);
+        scanf("%lf", &cavaleiro2.cavalo.velocidademinima);
+        scanf("%d", &cavaleiro2.cavalo.estamina);
+        
+    }while(verificarcavaleiros(&cavaleiro1, &cavaleiro2));
+    
+    mostrarcavaleiro(&cavaleiro1);
+    mostrarcavaleiro(&cavaleiro2);
+
+    compararquemganhou(&cavaleiro1, &cavaleiro2, tempodeduracaodaprova);
+    return 0;
+}
