@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+int roubar_maior(int **ary, int n)
+{
+   int *p = *ary; // p vai receber o ponteiro para o array de baús
+   int *valormax = p; // valormax aponta inicialemnte para o 1° baú
+   
+   for(int i = 1; i < n; i++) // esse for percorre o array a partir do segundo baú até o último, por isso começa em i = 1
+   {
+       if(*(p + i) > *valormax) // usa-se o p + 1 para in mudando o endereço das casa onde está o baú, se o valor for maior que o valor apontado pelo valormax...
+       {
+           valormax = p + i; // ...atualiza valormax para apontar pro novo maior
+           
+       }
+       
+   }
+    *valormax = -1; // trocamos o maior valor encontrado por -1
+}
+
+int main()
+{
+    int n;
+    scanf("%d", &n); // lê a quantidade de baús
+    
+    int baus[n]; // declara um array com o tamanho fornecido, em que cada posicisão corresponde a um baú
+    
+    int *p = baus; //ponteiro que vai apontar para o primeiro elemento do array
+
+    for(int i = 0; i < n; i++) // for para pegar as moedas de cada baú
+    {
+        scanf("%d", p + i); // insere diretamente no endereço p + 1, que é a posicão do array
+        
+    }
+    
+    for(int i = 0; i < n; i++)
+    {
+        printf("%d\n", *(p + i)); // vou printar o que está guardado no endereço de p + 1
+        
+    }
+    
+    roubar_maior(&p, n); // chama a função pra fazer o trabalho dela
+    
+    for(int i = 0; i < n; i++) // for pra mostrar como ficou depois de alterar 
+    {
+        printf("%d\n", *(p + i)); // printa o que tem guardado no endereço de p + i depois da alteração 
+        
+    }
+    
+    return 0;
+}
